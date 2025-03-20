@@ -1,71 +1,64 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, FlatList } from 'react-native';
 import ParallaxScrollView from '@/src/components/ParallaxScrollView';
 import { ThemedText } from '@/src/components/ThemedText';
 import { ThemedView } from '@/src/components/ThemedView';
+import { Post } from '@/src/components/Post';
+
+const samplePost = {
+  user_id: "1189b0ce-1091-7043-6b12-ec6ddb26749e",
+  overallScore: 88,
+  imdb_id: "tt0076759",
+  reviewText: "Supergoeie film, één van mijn lievelings! Zeker kijken!",
+  createdAt: 1742399334230,
+  scoreDetails: {
+    cinematography: 92,
+    story: 73,
+    acting: 75
+  },
+  id: "80229740-beef-41f6-858f-6c53d2ee47a8",
+  userName: "Jeroen",
+  movie: {
+    original_title: "Star Wars",
+    overview: "Princess Leia is captured and held hostage by the evil Imperial forces in their effort to take over the galactic Empire. Venturesome Luke Skywalker and dashing captain Han Solo team together with the loveable robot duo R2-D2 and C-3PO to rescue the beautiful princess and restore peace and justice in the Empire.",
+    poster_path: "/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg",
+    release_date: "1977-05-25",
+    runtime: 121,
+    tagline: "A long time ago in a galaxy far, far away..."
+  }
+}
+
+const samplePosts = [samplePost];
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
+    <ThemedView style={styles.HomeContainer}>
+      
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">Feed!</ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+
+      <FlatList
+        data={samplePosts}
+        renderItem={({ item }) => <Post {...item} />}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.stepContainer}
+      />
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  HomeContainer: {
+    flex: 1,
+    padding: 16,
+  },
   titleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 8,
+    padding: 20,
   },
   stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+    flex: 1,
+    gap: 16,
   },
 });
