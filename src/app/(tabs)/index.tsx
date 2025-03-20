@@ -27,7 +27,30 @@ const samplePost = {
   }
 }
 
-const samplePosts = [samplePost];
+const samplePost2 = {
+  "user_id": "81e9000e-20b1-70f7-9065-358ae5c39f8e",
+  "overallScore": 81,
+  "imdb_id": "tt0266543",
+  "reviewText": "This was my favorite chilhood movie, and is still amazing!",
+  "createdAt": 1742483431909,
+  "scoreDetails": {
+    "cinematography": 79,
+    "story": 92,
+    "acting": 81
+  },
+  "id": "aef723a1-5929-4e48-9ee7-26408f8862ae",
+  "userName": "Daniel Martins",
+  "movie": {
+    "original_title": "Finding Nemo",
+    "overview": "Nemo, an adventurous young clownfish, is unexpectedly taken from his Great Barrier Reef home to a dentist's office aquarium. It's up to his worrisome father Marlin and a friendly but forgetful fish Dory to bring Nemo home -- meeting vegetarian sharks, surfer dude turtles, hypnotic jellyfish, hungry seagulls, and more along the way.",
+    "poster_path": "/eHuGQ10FUzK1mdOY69wF5pGgEf5.jpg",
+    "release_date": "2003-05-30",
+    "runtime": 100,
+    "tagline": "There are 3.7 trillion fish in the ocean. They're looking for one."
+  }
+}
+
+const samplePosts = [samplePost, samplePost2];
 
 export default function HomeScreen() {
   return (
