@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Platform, FlatList, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Image, StyleSheet, Platform, FlatList, View,  ActivityIndicator } from 'react-native';
 import { ThemedText } from '@/src/components/ThemedText';
 import { ThemedView } from '@/src/components/ThemedView';
 import { Post } from '@/src/components/Post';
@@ -51,7 +52,47 @@ const samplePost2 = {
 
 const samplePosts = [samplePost, samplePost2];
 
+
 export default function HomeScreen() {
+
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('https://nauh6a1bvk.execute-api.eu-west-3.amazonaws.com/dev/posts');
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      const text = await response.text(); // Get raw text response
+      console.log("Raw API Response:", text); // Debugging
+  
+      // Try to parse as an array
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch (error) {
+        console.error("JSON Parse Error:", error);
+        json = text.split("\n").filter(line => line).map(line => JSON.parse(line)); // If newline-delimited JSON
+      }
+  
+      const postsArray = Array.isArray(json) ? json : [json]; 
+
+      setPosts(postsArray);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
   return (
     <ThemedView style={styles.HomeContainer}>
       
@@ -59,15 +100,17 @@ export default function HomeScreen() {
         <ThemedText type="title">Feed!</ThemedText>
       </ThemedView>
 
-      <FlatList
-        data={samplePosts}
-        renderItem={({ item }) => {
-          console.log("Rendering item: ", item);
-          return <Post {...item} />}
-        }
-        
-        keyExtractor={(item) => item.id}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : error ? (
+        <ThemedText type="default">{error}</ThemedText>
+      ) : (
+        <FlatList
+          data={posts}
+          renderItem={({ item }) => <Post {...item} />}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </ThemedView>
   );
 }

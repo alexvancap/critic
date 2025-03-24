@@ -1,7 +1,7 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, View } from "react-native";
 
 interface PostProps {
   user_id: string;
@@ -31,38 +31,50 @@ export function Post({ userName, overallScore, reviewText, movie, scoreDetails }
 
   return (
   <ThemedView style={styles.postContainer}>
-    <ThemedText type="defaultSemiBold"><MaterialIcons size={28} name="account-circle" />{userName}</ThemedText>
-    <ThemedText type="default">{reviewText}</ThemedText>
+    <View style={styles.line} />
+    <View style={styles.userContainer}>
+      <MaterialIcons size={38} color={'#fff'} name="account-circle" />
+      <ThemedText type="defaultSemiBold">{userName}</ThemedText>
+    </View>
+    <ThemedText type="defaultSemiBold">{reviewText}</ThemedText>
     <Image 
         source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }} 
         style={styles.posterImage} 
       />
     <ThemedText type="subtitle">{movie.original_title}</ThemedText>
-    <ThemedText type="subtitle">{movie.tagline}</ThemedText>
-    <ThemedText type="defaultSemiBold">Overall Score: {overallScore}</ThemedText>
-    <ThemedText type="defaultSemiBold">Cinematografy: {scoreDetails.cinematography}</ThemedText>
-    <ThemedText type="defaultSemiBold">Story: {scoreDetails.story}</ThemedText>
-    <ThemedText type="defaultSemiBold">Acting: {scoreDetails.acting}</ThemedText>
+    <ThemedText type="default">{movie.tagline}</ThemedText>
+    <ThemedText type="default">Overall Score {overallScore}</ThemedText>
+    <ThemedText type="defaultSemiBold">Cinematografy {scoreDetails.cinematography}</ThemedText>
+    <ThemedText type="defaultSemiBold">Story {scoreDetails.story}</ThemedText>
+    <ThemedText type="defaultSemiBold">Acting {scoreDetails.acting}</ThemedText>
   </ThemedView>  
   );
 }
 
 const styles = StyleSheet.create({
   postContainer: {
-    padding: 0,
-    borderRadius: 4,
+    paddingBottom: 10,
     marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   posterImage: {
-    marginTop: 10,
+    marginVertical: 12,
     width: 340,
     height: 440,
-    borderRadius: 8,
+    borderRadius: 4,
   },
+  userContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    marginVertical: 4,
+    lineHeight: 10,
+    alignItems: 'center',
+    color: 'white'
+  },
+  line: {
+    width: '100%', 
+    height: 1, 
+    backgroundColor: 'gray', 
+    marginVertical: 10, // Optional spacin
+  }
 
 });
