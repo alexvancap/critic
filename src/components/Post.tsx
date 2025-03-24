@@ -1,3 +1,4 @@
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 import { StyleSheet, Image } from "react-native";
@@ -30,14 +31,14 @@ export function Post({ userName, overallScore, reviewText, movie, scoreDetails }
 
   return (
   <ThemedView style={styles.postContainer}>
-    <ThemedText type="defaultSemiBold">{userName} watched {movie.original_title}</ThemedText>
+    <ThemedText type="defaultSemiBold"><MaterialIcons size={28} name="account-circle" />{userName}</ThemedText>
+    <ThemedText type="default">{reviewText}</ThemedText>
     <Image 
         source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }} 
         style={styles.posterImage} 
       />
     <ThemedText type="subtitle">{movie.original_title}</ThemedText>
     <ThemedText type="subtitle">{movie.tagline}</ThemedText>
-    <ThemedText type="default">{reviewText}</ThemedText>
     <ThemedText type="defaultSemiBold">Overall Score: {overallScore}</ThemedText>
     <ThemedText type="defaultSemiBold">Cinematografy: {scoreDetails.cinematography}</ThemedText>
     <ThemedText type="defaultSemiBold">Story: {scoreDetails.story}</ThemedText>
@@ -48,7 +49,7 @@ export function Post({ userName, overallScore, reviewText, movie, scoreDetails }
 
 const styles = StyleSheet.create({
   postContainer: {
-    padding: 4,
+    padding: 0,
     borderRadius: 4,
     marginBottom: 16,
     shadowColor: '#000',
@@ -58,8 +59,9 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   posterImage: {
-    width: 200,
-    height: 300,
+    marginTop: 10,
+    width: 340,
+    height: 440,
     borderRadius: 8,
   },
 

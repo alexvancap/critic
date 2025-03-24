@@ -1,5 +1,4 @@
-import { Image, StyleSheet, Platform, FlatList } from 'react-native';
-import ParallaxScrollView from '@/src/components/ParallaxScrollView';
+import { Image, StyleSheet, Platform, FlatList, View } from 'react-native';
 import { ThemedText } from '@/src/components/ThemedText';
 import { ThemedView } from '@/src/components/ThemedView';
 import { Post } from '@/src/components/Post';
@@ -62,9 +61,12 @@ export default function HomeScreen() {
 
       <FlatList
         data={samplePosts}
-        renderItem={({ item }) => <Post {...item} />}
+        renderItem={({ item }) => {
+          console.log("Rendering item: ", item);
+          return <Post {...item} />}
+        }
+        
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.stepContainer}
       />
     </ThemedView>
   );
