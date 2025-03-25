@@ -1,0 +1,59 @@
+// src/app/createPost.tsx
+
+import React, { useState } from 'react';
+import { View, TextInput, Button, Text } from 'react-native';
+import { useRouter } from 'expo-router';
+
+const CreatePostScreen = () => {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    // Handle the post creation logic here (e.g., API call)
+    console.log('Post created', { title, content });
+
+    // Navigate back to Home (or another screen)
+    router.push('/'); // or you can use router.back() to go back to the previous screen
+  };
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20}}>
+      <Text style={{ marginBottom: 20 }}>Create a New Post</Text>
+      <TextInput
+        style={{
+          height: 40,
+          borderColor: 'gray',
+          borderWidth: 1,
+          marginBottom: 20,
+          borderRadius: 4,
+          width: '100%',
+          paddingLeft: 10,
+          color: 'white',
+        }}
+        placeholder="Movie"
+        value={title}
+        onChangeText={setTitle}
+      />
+      <TextInput
+        style={{
+          height: 100,
+          borderColor: 'gray',
+          borderWidth: 1,
+          marginBottom: 20,
+          width: '100%',
+          paddingLeft: 10,
+          borderRadius: 4,
+          color: 'white',
+        }}
+        placeholder="What did you think of the movie?"
+        multiline
+        value={content}
+        onChangeText={setContent}
+      />
+      <Button title="Submit Post" onPress={handleSubmit} />
+    </View>
+  );
+};
+
+export default CreatePostScreen;

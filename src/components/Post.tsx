@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     width: '100%', 
     height: 1, 
     backgroundColor: 'gray', 
-    marginVertical: 10, // Optional spacin
+    marginVertical: 10,
   }
 
 });

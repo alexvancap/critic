@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, Platform, FlatList, View,  ActivityIndicator } from 'react-native';
+import { Image, StyleSheet, Platform, FlatList, View, Text, Button,  ActivityIndicator } from 'react-native';
 import { ThemedText } from '@/src/components/ThemedText';
 import { ThemedView } from '@/src/components/ThemedView';
 import { Post } from '@/src/components/Post';
+import React from 'react';
+import { useRouter } from 'expo-router';
+import CreatePostButton from "@/src/components/createPostButton";
+import { navigate } from 'expo-router/build/global-state/routing';
 
 export default function HomeScreen() {
 
@@ -44,11 +48,14 @@ export default function HomeScreen() {
 
 
 
+
+
   return (
     <ThemedView style={styles.HomeContainer}>
       
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Feed!</ThemedText>
+        <CreatePostButton/>
       </ThemedView>
 
       {loading ? (
