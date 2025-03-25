@@ -67,6 +67,7 @@ export default function HomeScreen() {
           data={posts}
           renderItem={({ item }) => <Post {...item} />}
           keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </ThemedView>
@@ -76,7 +77,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   HomeContainer: {
     flex: 1,
-    padding: 16,
+    padding: 12,
   },
   titleContainer: {
     flexDirection: 'row',

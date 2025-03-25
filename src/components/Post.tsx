@@ -2,6 +2,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 import { StyleSheet, Image, View, Text } from "react-native";
+import CircleRating from "./CircleRating";
 
 interface PostProps {
   user_id: string;
@@ -55,17 +56,22 @@ export function Post({ userName, overallScore, reviewText, movie, scoreDetails, 
       <ThemedText type="defaultSemiBold">{userName}</ThemedText>
       <ThemedText type="default" style={{ position: "absolute", right: 0, color: "gray", fontSize: 14 }}>{timeAgo(createdAt)}</ThemedText>
     </View>
-    <ThemedText type="defaultSemiBold">{reviewText}</ThemedText>
+    <View style={{ position: "relative", alignItems: "center", justifyContent: "center"}}>
     <Image 
         source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }} 
         style={styles.posterImage} 
       />
+    <View style={{ position: 'absolute', right: 14, bottom: 30 }}>
+      <CircleRating overallScore={true} width={10} size={75} score={scoreDetails.cinematography}/>
+    </View>
+    </View>
     <ThemedText type="subtitle">{movie.original_title}</ThemedText>
-    <ThemedText type="default">{movie.tagline}</ThemedText>
-    <ThemedText type="default">Overall Score {overallScore}</ThemedText>
-    <ThemedText type="defaultSemiBold">Cinematografy {scoreDetails.cinematography}</ThemedText>
-    <ThemedText type="defaultSemiBold">Story {scoreDetails.story}</ThemedText>
-    <ThemedText type="defaultSemiBold">Acting {scoreDetails.acting}</ThemedText>
+    <ThemedText type="defaultSemiBold">{reviewText}</ThemedText>
+    <ThemedView style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: "center", marginVertical: 12 }}>
+      <CircleRating rating='Cinema' score={scoreDetails.cinematography}/>
+      <CircleRating rating='Story' score={scoreDetails.story}/>
+      <CircleRating rating='Acting' score={scoreDetails.acting}/>
+    </ThemedView>
     <View style={styles.line} />
   </ThemedView>  
   );
@@ -77,24 +83,23 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   posterImage: {
-    marginVertical: 12,
-    width: 340,
-    height: 440,
-    borderRadius: 4,
+    marginVertical: 14,
+    width: 352,
+    height: 465,
+    borderRadius: 0,
   },
   userContainer: {
     flexDirection: 'row',
     gap: 8,
-    marginVertical: 4,
-    lineHeight: 10,
+    marginBottom: 4,
     alignItems: 'center',
     color: 'white'
   },
   line: {
     width: '100%', 
-    height: 1, 
+    height: .5, 
     backgroundColor: 'gray', 
-    marginVertical: 10,
+    marginTop: 25,
   }
 
 });
