@@ -1,7 +1,7 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
-import { StyleSheet, Image, View } from "react-native";
+import { StyleSheet, Image, View, Text } from "react-native";
 
 interface PostProps {
   user_id: string;
@@ -26,14 +26,34 @@ interface PostProps {
   }
 }
 
+function timeAgo(timestamp: number) {
+  const now = Date.now(); // Current time in milliseconds
+  const diff = now - timestamp; // Difference in milliseconds
 
-export function Post({ userName, overallScore, reviewText, movie, scoreDetails }: PostProps) {
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `${days} day${days > 1 ? 's' : ''} ago`;
+  } else if (hours > 0) {
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  } else if (minutes > 0) {
+    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  } else {
+    return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+  }
+}
+
+export function Post({ userName, overallScore, reviewText, movie, scoreDetails, createdAt }: PostProps) {
 
   return (
   <ThemedView style={styles.postContainer}>
     <View style={styles.userContainer}>
       <MaterialIcons size={38} color={'#fff'} name="account-circle" />
       <ThemedText type="defaultSemiBold">{userName}</ThemedText>
+      <ThemedText type="default" style={{ position: "absolute", right: 0, color: "gray", fontSize: 14 }}>{timeAgo(createdAt)}</ThemedText>
     </View>
     <ThemedText type="defaultSemiBold">{reviewText}</ThemedText>
     <Image 
