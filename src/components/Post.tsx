@@ -31,7 +31,6 @@ export function Post({ userName, overallScore, reviewText, movie, scoreDetails }
 
   return (
   <ThemedView style={styles.postContainer}>
-    <View style={styles.line} />
     <View style={styles.userContainer}>
       <MaterialIcons size={38} color={'#fff'} name="account-circle" />
       <ThemedText type="defaultSemiBold">{userName}</ThemedText>
@@ -47,6 +46,7 @@ export function Post({ userName, overallScore, reviewText, movie, scoreDetails }
     <ThemedText type="defaultSemiBold">Cinematografy {scoreDetails.cinematography}</ThemedText>
     <ThemedText type="defaultSemiBold">Story {scoreDetails.story}</ThemedText>
     <ThemedText type="defaultSemiBold">Acting {scoreDetails.acting}</ThemedText>
+    <View style={styles.line} />
   </ThemedView>  
   );
 }
