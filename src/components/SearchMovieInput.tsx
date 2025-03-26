@@ -67,7 +67,7 @@ export const SearchMovieInput = ({ onStateChange }) => {
               {movie.poster_path && (
                 <Image 
                   source={{ uri: `${IMAGE_BASE_URL}${movie.poster_path}` }} 
-                  style={{ width: 120, height: 200 }} 
+                  style={{ width: 80, height: 120 }} 
                 />
               )}
               <Text style={styles.suggestionText}>{movie.title}</Text>
@@ -105,15 +105,16 @@ const styles = StyleSheet.create({
   suggestionItem: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    padding: 1,
     borderBottomWidth: 1,
     borderBottomColor: "gray",
   },
-  poster: {
-    width: 40,
-    height: 70,
-    borderRadius: 10,
-    marginRight: 10,
+  suggestionText: {
+    color: "white",
+    marginHorizontal: 10,
+    fontSize: 16,
+    maxWidth: 210,
+    textDecorationLine: "underline",
   },
   selectedMovieContainer: {
     flexDirection: "row",
