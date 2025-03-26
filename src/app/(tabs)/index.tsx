@@ -24,8 +24,7 @@ export default function HomeScreen() {
       if (!response.ok) {
         throw new Error('Failed to fetch posts');
       }
-      const text = await response.text(); // Get raw text response
-      console.log("Raw API Response:", text); // Debugging
+      const text = await response.text();
   
       // Try to parse as an array
       let json;

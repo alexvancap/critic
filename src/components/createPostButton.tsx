@@ -6,18 +6,11 @@ import { useRouter } from "expo-router";
 
 const CreatePostButton = () => {
 
-
-
   const router = useRouter();
-
-  const navigateToCreatePost = () => {
-    console.log("Navigating to CreatePostScreen...");
-    router.push('/createPost');
-  }
 
   return (
     <TouchableOpacity
-      onPress={navigateToCreatePost}
+      onPress={() => router.push('/createPost')}
       style={{
         backgroundColor: "red",
         padding: 5,

@@ -1,42 +1,48 @@
-import { useState } from "react";
-import { TextInput, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import { TextInput, StyleSheet, View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 
-export const SearchMovieInput = () => {
+const API_KEY = "1b5a60707a2d97714078e9b38dcbdbf9"; // Replace with your TMDb API key
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w200";
+
+interface Movie {
+  poster_path: string;
+  title: string;
+  overview: string;
+  release_date: string;
+  id: number;
+}
+
+export const SearchMovieInput = ({ onStateChange }) => {
   const [searchText, setSearchText] = useState("");
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState({});
 
-  const movies = [
-    { imdb_id: "tt203030", original_title: "Avatar: The Way of Water" },
-    { imdb_id: "tt0111161", original_title: "The Shawshank Redemption" },
-    { imdb_id: "tt0120815", original_title: "The Lord of the Rings: The Return of the King" },
-    { imdb_id: "tt0068646", original_title: "The Godfather" },
-    { imdb_id: "tt0071562", original_title: "The Godfather: Part II" },
-    { imdb_id: "tt0468569", original_title: "The Dark Knight" },
-    { imdb_id: "tt0083658", original_title: "The Godfather: Part III" },
-    { imdb_id: "tt0108052", original_title: "The Lord of the Rings: The Fellowship of the Ring" },
-    { imdb_id: "tt0120737", original_title: "Pulp Fiction" },
-    { imdb_id: "tt0133093", original_title: "The Matrix" },
-    { imdb_id: "tt0167260", original_title: "Inception" },
-    { imdb_id: "tt0073486", original_title: "Schindler's List" },
-  ];
-
-  const handleTextChange = (text) => {
-    setSearchText(text);
-
-    // Filter and limit to 3 movies
-    if (text.length > 0) {
-      const filtered = movies
-        .filter((movie) => movie.original_title.toLowerCase().includes(text.toLowerCase()))
-        .slice(0, 3);
-      setFilteredMovies(filtered);
+  useEffect(() => {
+    if (searchText.length > 2) {
+      fetchMovies(searchText);
     } else {
-      setFilteredMovies([]);
+      setMovies([]); // Clear results if search text is too short
+    }
+  }, [searchText]);
+
+  const fetchMovies = async (query) => {
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/search/movie?query=${query}&api_key=${API_KEY}`
+      );
+      const data = await response.json();
+      setMovies(data.results.slice(0, 10)); // Now displaying 5 results
+    } catch (error) {
+      console.error("Error fetching movies:", error);
     }
   };
 
-  const handleSelectMovie = (movieTitle) => {
-    setSearchText(movieTitle);
-    setFilteredMovies([]); // Hide suggestions after selection
+  const handleSelectMovie = (movie: Movie) => {
+    
+    onStateChange(movie);
+    setSearchText('');
+    setSelectedMovie({});
+    setMovies([]); // Hide suggestions after selection
   };
 
   return (
@@ -46,18 +52,28 @@ export const SearchMovieInput = () => {
         placeholder="Search for a movie..."
         placeholderTextColor="white"
         value={searchText}
-        onChangeText={handleTextChange}
+        onChangeText={setSearchText}
       />
-      
-      {/* Display movie suggestions */}
-      {filteredMovies.length > 0 && (
-        <View style={styles.suggestionsContainer}>
-          {filteredMovies.map((movie) => (
-            <TouchableOpacity key={movie.imdb_id} style={styles.suggestionItem} onPress={() => handleSelectMovie(movie.original_title)}>
-              <Text style={styles.suggestionText}>{movie.original_title}</Text>
+
+
+      {movies.length > 0 && (
+        <ScrollView style={styles.suggestionsContainer}>
+          {movies.map((movie) => (
+            <TouchableOpacity 
+              key={movie.id} 
+              style={styles.suggestionItem} 
+              onPress={() => handleSelectMovie(movie)}
+            >
+              {movie.poster_path && (
+                <Image 
+                  source={{ uri: `${IMAGE_BASE_URL}${movie.poster_path}` }} 
+                  style={{ width: 120, height: 200 }} 
+                />
+              )}
+              <Text style={styles.suggestionText}>{movie.title}</Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -65,31 +81,44 @@ export const SearchMovieInput = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "80%",
-    alignSelf: "center",
+    width: "100%",
+    flex: 1,
+    flexDirection: "column",
   },
   input: {
-    height: 40,
-    margin: 12,
+    height: 55,
     borderWidth: 1,
+    fontSize: 16,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 3,
     color: "white",
     borderColor: "gray",
     backgroundColor: "#2C2725",
   },
   suggestionsContainer: {
+    minHeight: 300, // Increased to fit 5 suggestions
     backgroundColor: "#444",
-    borderRadius: 5,
-    marginTop: 5,
+    borderRadius: 2,
+    marginTop: 10,
+    zIndex: 10,
   },
   suggestionItem: {
+    flexDirection: "row",
+    alignItems: "center",
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "gray",
   },
-  suggestionText: {
-    color: "white",
+  poster: {
+    width: 40,
+    height: 70,
+    borderRadius: 10,
+    marginRight: 10,
   },
+  selectedMovieContainer: {
+    flexDirection: "row",
+    color: 'white',
+    marginTop: 10,
+  }
 });
 
