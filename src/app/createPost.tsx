@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text } from 'react-native';
 import { useRouter } from 'expo-router';
+import { SearchMovieInput } from '../components/SearchMovieInput';
 
 const CreatePostScreen = () => {
   const [title, setTitle] = useState('');
@@ -18,23 +19,8 @@ const CreatePostScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20}}>
-      <Text style={{ marginBottom: 20 }}>Create a New Post</Text>
-      <TextInput
-        style={{
-          height: 40,
-          borderColor: 'gray',
-          borderWidth: 1,
-          marginBottom: 20,
-          borderRadius: 4,
-          width: '100%',
-          paddingLeft: 10,
-          color: 'white',
-        }}
-        placeholder="Movie"
-        value={title}
-        onChangeText={setTitle}
-      />
+    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#1a1a1a', alignItems: 'center', padding: 20}}>
+      <SearchMovieInput/>
       <TextInput
         style={{
           height: 100,
