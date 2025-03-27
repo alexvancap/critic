@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SearchMovieInput } from '../components/SearchMovieInput';
+import CircleRating from '../components/CircleRating';
+import CircleRatingInteractive from '../components/CircleRatingInteractive';
 
 const CreatePostScreen = () => {
 
@@ -44,6 +46,14 @@ const CreatePostScreen = () => {
               value={reviewText}
               onChangeText={setReviewText}
             />
+            <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 40 }}>
+              <CircleRatingInteractive rating='Overall Score' score={50} />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 40, }}>
+              <CircleRatingInteractive rating='Cinema' score={50} />
+              <CircleRatingInteractive rating='Story' score={50} />
+              <CircleRatingInteractive rating='Acting' score={50} />
+            </View>
             <Button title="Create Post!" onPress={handleSubmit} />
             <View>
               
@@ -64,12 +74,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textDescription: {
-    height: 100,
+    height: 60,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 20,
     width: '100%',
-    paddingLeft: 10,
     borderRadius: 4,
     color: 'white',
   },

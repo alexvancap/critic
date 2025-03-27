@@ -19,7 +19,6 @@ const CreatePostButton = () => {
         alignItems: "center",
         flexDirection: "row",
         gap: 2,
-
         position: "absolute",
         top: 20,
         right: 0,  
