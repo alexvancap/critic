@@ -33,7 +33,7 @@ const CircleRating = (props: CircleRatingProps) => {
           backgroundColor={props.overallScore ? "transparent" : "#333333"}
           >
           </CircularProgress>
-          <Text style={styles.text}>{props.score}%</Text>
+          <Text style={styles.text}>{Math.round(props.score)}%</Text>
           <Text style={[styles.text, styles.description]}>{props.rating}</Text>
     </View>
     

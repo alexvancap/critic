@@ -31,7 +31,6 @@ const CreatePostScreen = () => {
 
 
   const handleSubmit = async () => {
-    //console.log('Post created', movie);
 
     try{
 
@@ -40,7 +39,6 @@ const CreatePostScreen = () => {
 
       postObject.imdb_id = imdbId;
       postObject.user_id = userId;
-
 
     } catch (error){
       console.log('Error creating post', error);
@@ -54,6 +52,23 @@ const CreatePostScreen = () => {
         console.log('IMDb ID not found');
       }
     });
+    createPost();
+  };
+
+  const createPost = async () => {
+    try {
+      const response = await fetch('https://nauh6a1bvk.execute-api.eu-west-3.amazonaws.com/dev/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postObject),
+      });
+      const data = await response.json();
+      console.log('Post created', data);
+    } catch (error) {
+      console.error('Error creating post', error);
+    }
   };
 
   // Single handler to update any score
@@ -79,14 +94,14 @@ const CreatePostScreen = () => {
       
       // Check if the response contains an imdb_id
       if (data && data.imdb_id) {
-        return data.imdb_id;  // Return the IMDb ID of the specific movie
+        return data.imdb_id;
       } else {
         console.error('IMDb ID not found for movie:', movieId);
-        return null;  // If no IMDb ID, return null
+        return null;
       }
     } catch (error) {
       console.error('Error fetching IMDb ID:', error);
-      return null;  // Return null if there was an error
+      return null;
     }
   };
   
