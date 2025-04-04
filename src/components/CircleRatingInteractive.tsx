@@ -2,44 +2,45 @@ import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, PanResponder, Animated } from 'react-native';
 import { CircularProgress } from 'react-native-circular-progress';
 
-interface CircleRatingProps {
-  overallScore?: boolean;
-  rating?: string;
+interface CircleRatingInteractiveProps {
+  rating: string;
   score: number;
-  size?: number;
-  width?: number;
-  tintColor?: string;
-  backgroundColor?: string;
-  onDragStart?: (dragging: boolean) => void; // Callback to disable ScrollView
+  onScoreChange: (newScore: number) => void; // Add this prop
+  onDragStart?: (dragging: boolean) => void;
 }
 
-const getColorForScore = (score: number) => {
-  if (score >= 75) return 'green';
-  if (score >= 50) return 'orange';
-  return 'red';
-};
-
-const CircleRating = (props: CircleRatingProps) => {
-  const [score, setScore] = useState(props.score);
-  const tintColor = getColorForScore(score);
+const CircleRatingInteractive = (props: CircleRatingInteractiveProps) => {
+  const { rating, score, onScoreChange, onDragStart } = props;
   const buttonY = useRef(new Animated.Value(0)).current;
+
+  const getColorForScore = (score: number) => {
+    if (score >= 75) return 'green';
+    if (score >= 50) return 'orange';
+    return 'red';
+  };
+
+  const tintColor = getColorForScore(score);
 
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponderCapture: () => true,
+
       onPanResponderGrant: () => {
-        props.onDragStart?.(true); // Disable ScrollView
+        onDragStart?.(true); // Disable scrolling
         buttonY.setOffset(buttonY._value);
         buttonY.setValue(0);
       },
+
       onPanResponderMove: (event, gestureState) => {
         let newScore = Math.min(100, Math.max(0, score - gestureState.dy * 0.5));
-        setScore(newScore);
+        onScoreChange(newScore); // Update the score in the parent
         buttonY.setValue(gestureState.dy);
       },
+
       onPanResponderRelease: () => {
-        props.onDragStart?.(false); // Enable ScrollView
+        onDragStart?.(false); // Enable scrolling
         buttonY.flattenOffset();
         Animated.spring(buttonY, {
           toValue: 0,
@@ -50,17 +51,17 @@ const CircleRating = (props: CircleRatingProps) => {
   ).current;
 
   return (
-    <View style={[styles.container, props.overallScore && { opacity: 0.95 }]}>      
+    <View style={[styles.container]}>
       <CircularProgress
-        size={props.size ?? 90}
-        width={props.width ?? 8}
+        size={90}
+        width={8}
         fill={score}
         tintColor={tintColor}
-        backgroundColor={props.overallScore ? 'transparent' : '#333333'}
+        backgroundColor="#333"
       />
       <Text style={styles.text}>{Math.round(score)}%</Text>
-      <Text style={[styles.text, styles.description]}>{props.rating}</Text>
-      
+      <Text style={[styles.text, styles.description]}>{rating}</Text>
+
       <Animated.View style={[styles.dragButton, { transform: [{ translateY: buttonY }] }]} {...panResponder.panHandlers} />
     </View>
   );
@@ -86,12 +87,12 @@ const styles = StyleSheet.create({
   },
   dragButton: {
     position: 'absolute',
-    bottom: -20,
-    width: 40,
-    height: 40,
-    backgroundColor: 'gray',
-    borderRadius: 20,
+    bottom: 10,
+    width: 70,
+    height: 70,
+    backgroundColor: 'transparent',
+    borderRadius: '100%',
   },
 });
 
-export default CircleRating;
+export default CircleRatingInteractive;

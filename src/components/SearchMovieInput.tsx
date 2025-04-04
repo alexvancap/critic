@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontSize: 16,
     maxWidth: 210,
-    textDecorationLine: "underline",
   },
   selectedMovieContainer: {
     flexDirection: "row",
