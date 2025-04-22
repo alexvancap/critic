@@ -1,22 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const counterSlice = createSlice({
+// create slice bundles Initial State, Reducers, Action creators and Action Types
+
+const initialState = {
+  username: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  status: '', 
+};
+
+
+export const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    username: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-  },
+  initialState,
   reducers: {
-    example: (state) => {
-      state.value = 'example';
+    setStatus: (state, action) => {
+      state.status = action.payload;
     },
   },
 });
 
-export const { example } = counterSlice.actions;
+export const { setStatus } = userSlice.actions;
 
-// export const selectCount = (state) => state.counter.value;
-
-export default counterSlice.reducer;
+export default userSlice.reducer;
